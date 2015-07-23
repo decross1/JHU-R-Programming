@@ -1,0 +1,33 @@
+
+pollutantmean <- function(directory, pollutant, id = 1:332) 
+{
+  ## 'directory' is a character vector of length 1 indicating
+  ## the location of the CSV files
+  files_list <- list.files(directory, full.names = TRUE)
+  dat <- data.frame()
+  
+  for (i in 1:332)
+  {
+    #loops through the files, rbinding them together
+    dat <- rbind(dat, read.csv(files_list[i]))
+  }
+  
+  ## 'id' is an integer vector indicating the monitor ID numbers
+  ## to be used
+  dat_subset <- dat[which(dat[, "ID"] %in% id),]
+  
+  ## 'pollutant' is a character vector of length 1 indicating
+  ## the name of the pollutant for which we will calculate the
+  ## mean; either "sulfate" or "nitrate".
+  if (pollutant == "sulfate")
+  {
+    mean(dat_subset[, "sulfate"], na.rm = TRUE) 
+  }
+  else if(pollutant == "nitrate")
+  {
+    mean(dat_subset[, "nitrate"], na.rm = TRUE)
+  }
+  ## Return the mean of the pollutant across all monitors list
+  ## in the 'id' vector (ignoring NA values)
+  ## NOTE: Do not round the result!
+}
